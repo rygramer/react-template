@@ -1,0 +1,13 @@
+{
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.wordWrap": "on",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+      },
+      "extensions": ["esbenp.prettier-vscode"]
+    }
+  }
+}
