@@ -1,199 +1,29 @@
-import { styled, useTheme } from '@mui/material/styles';
-import {
-  Box,
-  Drawer,
-  AppBar,
-  Toolbar,
-  List,
-  CssBaseline,
-  Typography,
-  Divider,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Paper
-} from '@mui/material';
-import {
-  Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
-  MoveToInbox as InboxIcon,
-  Mail as MailIcon
-} from '@mui/icons-material';
-import { Fragment, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
+import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
 import { Route } from './+types/home';
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar
-}));
+import Header from './components/Header';
+import Menu from './components/Menu';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Home' }, { name: 'description', content: 'Welcome home!' }];
 }
 
-export default function MiniDrawer() {
-  const menuGroups = [
-    {
-      items: [
-        { text: 'Inbox', icon: <InboxIcon /> },
-        { text: 'Starred', icon: <MailIcon /> },
-        { text: 'Send email', icon: <InboxIcon /> },
-        { text: 'Drafts', icon: <MailIcon /> }
-      ]
-    },
-    {
-      items: [
-        { text: 'All mail', icon: <InboxIcon /> },
-        { text: 'Trash', icon: <MailIcon /> },
-        { text: 'Spam', icon: <InboxIcon /> }
-      ]
-    }
-  ];
-
-  function Menu({ showText }: { showText: boolean }) {
-    return (
-      <nav>
-        {menuGroups.map((group, groupIdx) => (
-          <Fragment key={groupIdx}>
-            <List>
-              {group.items.map((item, itemIdx) => (
-                <ListItem
-                  key={item.text}
-                  disablePadding
-                  sx={{ display: 'block' }}
-                >
-                  <ListItemButton
-                    sx={{
-                      justifyContent: showText ? 'flex-start' : 'center',
-                      minHeight: 48
-                    }}
-                    aria-labelledby={'menu-item-' + groupIdx + itemIdx}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        justifyContent: 'center',
-                        mr: showText ? 3 : 0
-                      }}
-                      aria-label={item.text}
-                    >
-                      {item.icon}
-                    </ListItemIcon>
-                    {showText && (
-                      <ListItemText
-                        id={'menu-item-' + groupIdx + itemIdx}
-                        primary={item.text}
-                      />
-                    )}
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-            {groupIdx < menuGroups.length - 1 && <Divider />}
-          </Fragment>
-        ))}
-      </nav>
-    );
-  }
+export default function Home() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
   return (
     <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position='fixed'>
-        <Toolbar>
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            onClick={handleDrawerOpen}
-            edge='start'
-            sx={{ marginRight: 5 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant='h6' noWrap component='div'>
-            Hybrid Mini/Temporary Drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      {/* Mini sidebar with transition animation, hidden when drawer is open */}
-      <Drawer
-        variant='permanent'
-        open={!open}
-        sx={{
-          width: theme.spacing(7),
-          flexShrink: 0
-        }}
-        slotProps={{
-          paper: {
-            sx: {
-              width: theme.spacing(7),
-              boxSizing: 'border-box',
-              transition: theme.transitions.create(['width', 'margin'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen
-              }),
-              boxShadow: theme.shadows[4],
-              position: 'fixed',
-              top: theme.spacing(8),
-              height: `calc(100vh - ${theme.spacing(8)})`,
-              zIndex: theme.zIndex.drawer,
-              overflowX: 'hidden',
-              ...(open && { width: 0, marginLeft: `-${theme.spacing(7)}` }),
-              [theme.breakpoints.down('sm')]: {
-                top: theme.spacing(7),
-                height: `calc(100vh - ${theme.spacing(7)})`
-              }
-            }
-          }
-        }}
-      >
-        {!open && <Menu showText={false} />}
-      </Drawer>
-      {/* Temporary drawer overlays content with icons and text */}
-      <Drawer
-        anchor='left'
-        open={open}
-        onClose={handleDrawerClose}
-        variant='temporary'
-        ModalProps={{ keepMounted: true }}
-        sx={{ zIndex: theme.zIndex.drawer }}
-        slotProps={{
-          paper: {
-            component: (props) => (
-              <Paper
-                {...props}
-                sx={{ borderRadius: 0 }}
-                aria-label='expanded menu'
-              />
-            )
-          }
-        }}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose} aria-label='close menu'>
-            <ChevronLeftIcon />
-          </IconButton>
-        </DrawerHeader>
-        <Menu showText={true} />
-      </Drawer>
+      <Header onMenuClick={handleDrawerOpen} />
+      <Menu open={open} onClose={handleDrawerClose} />
       {/* Main content, shifted right to accommodate mini sidebar */}
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+        {/* Spacer for AppBar */}
+        <Box sx={{ height: theme.spacing(8) }} />
         <Typography sx={{ marginBottom: 2 }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
