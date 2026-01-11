@@ -134,7 +134,6 @@ export default function Menu({ open, onClose }: MenuProps) {
         open={open}
         onClose={onClose}
         variant='temporary'
-        ModalProps={{ keepMounted: true }}
         sx={{ zIndex: theme.zIndex.drawer }}
         slotProps={{
           paper: {

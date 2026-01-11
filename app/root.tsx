@@ -9,6 +9,8 @@ import {
 
 import type { Route } from './+types/root';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material';
+import { customTheme } from './theme';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -19,7 +21,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'
+    href: 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap'
   }
 ];
 
@@ -33,8 +35,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <CssBaseline />
-        {children}
+        <ThemeProvider theme={customTheme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

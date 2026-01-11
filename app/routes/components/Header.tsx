@@ -20,7 +20,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             <MenuIcon />
           </IconButton>
           <Typography variant='h6' noWrap component='div'>
-            Hybrid Mini/Temporary Drawer
+            Web App
           </Typography>
         </Toolbar>
       </AppBar>
